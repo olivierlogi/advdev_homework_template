@@ -24,7 +24,7 @@ PROJECT_NAME=$GUID-nexus
 ################>>>>>>>>>>>>>>>replace with template
 
 
-oc new-app /Users/olivier/Documents/GitHub/advdev_homework_template/Infrastructure/templates/template_nexus_param -p SERVICE_NAME=nexus
+oc new-app ../templates/template_nexus_param -p SERVICE_NAME=nexus
 ##########################################<<<<<<<<<<<<<<<<replace with template
 while : ; do
     echo "Checking if Nexus is Ready..."
