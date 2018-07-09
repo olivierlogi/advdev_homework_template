@@ -33,9 +33,7 @@ oc new-app -f ./Infrastructure/templates/jenkins.json -p MEMORY_LIMIT=2Gi -n ${G
 
 oc new-app --strategy=docker ./Infrastructure/docker/ -n ${GUID}-jenkins
 
-#docker login -u $(oc whoami) -p $(oc whoami -t) docker-registry-default.apps.${CLUSTER}
+oc create -f ./Infrastructure/templates/parksmap-pipeline-buildconfig.yaml -n ${GUID}-jenkins
 
-#docker push docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
-
-
+#BuildConfig  files
 oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
