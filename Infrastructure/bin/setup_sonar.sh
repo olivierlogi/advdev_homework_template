@@ -8,6 +8,7 @@ fi
 
 GUID=$1
 echo "Setting up Sonarqube in project $GUID-sonarqube"
+oc project $GUID-sonarqube
 
 # Code to set up the SonarQube project.
 # Ideally just calls a template

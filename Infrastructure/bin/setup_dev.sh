@@ -9,6 +9,8 @@ fi
 GUID=$1
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
+oc project ${GUID}-parks-dev
+
 # Code to set up the parks development project.
 
 # To be Implemented by Student

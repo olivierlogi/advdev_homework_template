@@ -30,8 +30,7 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 
 #oc_project "$GUID" 'jenkins'
 
-: '
-'
+oc project ${GUID}-jenkins
 
 ## Not required since the Jenkinsfile are already provinding the required podTemplate definition ##
 # https://docs.openshift.com/container-platform/3.9/using_images/other_images/jenkins.html#configuring-the-jenkins-kubernetes-plug-in
