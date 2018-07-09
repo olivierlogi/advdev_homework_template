@@ -202,7 +202,7 @@ parameters:
 - displayName: Jenkins service name
   name: SERVICE_NAME
   required: true
-  value: jenkins8
+  value: jenkins
 - displayName: Sonatype Jenkins version
   name: JENKINS_VERSION
   required: true

@@ -1,0 +1,11 @@
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/rest/gateway/model/Coordinates.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/db/MongoDBConnection.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/rest/BackendController.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/rest/Healthz.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/model/Park.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/rest/gateway/model/Backend.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/NationalParksApplication.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/db/ParkReadConverter.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/db/ParksAppConfig.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/model/Coordinates.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/Nationalparks/src/main/java/com/openshift/evg/roadshow/parks/rest/Parks.java

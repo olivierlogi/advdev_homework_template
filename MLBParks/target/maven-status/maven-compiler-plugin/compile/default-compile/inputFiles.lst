@@ -1,0 +1,10 @@
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/MLBParksApplication.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/MLBParks.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/model/Coordinates.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/gateway/model/Backend.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/BackendController.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/model/MLBPark.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/model/DataPoint.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/gateway/model/Coordinates.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/rest/Healthz.java
+/Users/olivier/Documents/GitHub/advdev_homework_template/MLBParks/src/main/java/com/openshift/evg/roadshow/db/MongoDBConnection.java
