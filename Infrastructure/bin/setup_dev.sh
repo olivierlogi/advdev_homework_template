@@ -29,7 +29,8 @@ oc new-app -f ./Infrastructure/templates/mongodb_persistent.json --param MEMORY_
 --param MONGODB_DATABASE=${MONGODB_DATABASE} \
 --param MONGODB_ADMIN_PASSWORD=${MONGODB_ADMIN_PASSWORD} \
 --param VOLUME_CAPACITY=${VOLUME_CAPACITY} \
---param MONGODB_VERSION=${MONGODB_VERSION} 
+--param MONGODB_VERSION=${MONGODB_VERSION}
+-n ${GUID}-parks-dev 
 
 #Deploy front end
 oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev
@@ -52,3 +53,5 @@ oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev
 oc expose dc parksmap -n ${GUID}-parks-dev
 oc expose svc parksmap -n ${GUID}-parks-dev
 oc policy add-role-to-user view --serviceaccount=default -n ${GUID}-parks-dev
+
+
