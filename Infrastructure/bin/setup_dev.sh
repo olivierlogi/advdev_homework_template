@@ -9,13 +9,8 @@ fi
 GUID=$1
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
-
-# Code to set up the parks development project.
-
-# To be Implemented by Student
-
-
-##Deploy mongo 
+##Deploy mongo
+echo "Deploy Mongo" 
 MEMORY_LIMIT="512Mi"
 NAMESPACE="openshift"
 DATABASE_SERVICE_NAME="mongodb"
@@ -26,7 +21,7 @@ MONGODB_ADMIN_PASSWORD="mongodb"
 VOLUME_CAPACITY="1Gi"
 MONGODB_VERSION="3.2" #could be latest
 
-oc new-app -f ./Infrastructure/templates/mongodb_persistent.json -n ${GUID}-parks-dev --param MEMORY_LIMIT=$MEMORY_LIMIT \ 
+oc new-app -f ./Infrastructure/templates/mongodb_persistent.json --param MEMORY_LIMIT=$MEMORY_LIMIT \
 --param NAMESPACE=${NAMESPACE} \
 --param DATABASE_SERVICE_NAME=${DATABASE_SERVICE_NAME} \
 --param MONGODB_USER=${MONGODB_USER} \
@@ -35,7 +30,6 @@ oc new-app -f ./Infrastructure/templates/mongodb_persistent.json -n ${GUID}-park
 --param MONGODB_ADMIN_PASSWORD=${MONGODB_ADMIN_PASSWORD} \
 --param VOLUME_CAPACITY=${VOLUME_CAPACITY} \
 --param MONGODB_VERSION=${MONGODB_VERSION} 
-
 
 #Deploy front end
 oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev
