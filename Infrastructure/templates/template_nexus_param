@@ -187,7 +187,7 @@ parameters:
 - displayName: Sonatype Nexus service name
   name: SERVICE_NAME
   required: true
-  value: nexus3
+  value: nexus
 - displayName: Sonatype Nexus version
   name: NEXUS_VERSION
   required: true
