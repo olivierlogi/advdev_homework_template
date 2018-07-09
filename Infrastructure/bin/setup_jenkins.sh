@@ -38,4 +38,4 @@ oc new-app --strategy=docker ./Infrastructure/docker/ -n ${GUID}-jenkins
 #docker push docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 
 
-oc new-app -f ../templates/jenkins-configmap.yaml --param GUID=${GUID}
+oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
