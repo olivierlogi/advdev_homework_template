@@ -33,7 +33,14 @@ oc new-app -f ./Infrastructure/templates/jenkins.json -p MEMORY_LIMIT=2Gi -n ${G
 
 oc new-app --strategy=docker ./Infrastructure/docker/ -n ${GUID}-jenkins
 
-oc create -f ./Infrastructure/templates/parksmap-pipeline-buildconfig.yaml -n ${GUID}-jenkins
+#Parksmap pipeline BuildConfig
+oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
 
-#BuildConfig  files
+#MLBPark pipeline BuildConfig
+oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
+
+#NationalParks pipeline BuildConfig
+oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
+
+#Jenkins slave BuildConfig 
 oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
