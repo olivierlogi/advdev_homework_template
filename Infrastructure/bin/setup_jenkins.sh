@@ -37,10 +37,10 @@ oc new-app --strategy=docker ./Infrastructure/docker/ -n ${GUID}-jenkins
 oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
 
 #MLBPark pipeline BuildConfig
-oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
+#oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
 
 #NationalParks pipeline BuildConfig
-oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
+#oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
 
 #Jenkins slave BuildConfig 
 oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
