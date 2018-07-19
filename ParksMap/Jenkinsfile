@@ -6,15 +6,20 @@ podTemplate(
   containers: [
     containerTemplate(
       name: "jnlp",
-      image: "docker-registry.default.svc:5000/${GUID}-jenkins/jenkins-slave-appdev",
+      image: "docker-registry.default.svc:5000/w054-jenkins/jenkins-slave-appdev",
       resourceRequestMemory: "1Gi",
       resourceLimitMemory: "2Gi"
     )
   ]
 ) {
   node('skopeo-pod') {
+    def GUID = "w054"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
+    git 'https://github.com/olivierlogi/advdev_homework_template.git'
+      echo "Packaging ParksMap"
+      sh "cd ParksMap"
+      sh "mvn -s ../nexus_settings.xml clean package -DskipTests=true"
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `ParksMap`.
