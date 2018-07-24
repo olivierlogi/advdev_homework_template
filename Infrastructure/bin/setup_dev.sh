@@ -48,7 +48,7 @@ echo "Creating Nationalparks base app"
 oc new-build --binary=true --name="nationalparks" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
 oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
 oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev
-oc expose dc/nationalparks -n ${GUID}-parks-dev
+oc expose dc/nationalparks --port 8080 -n ${GUID}-parks-dev
 oc expose svc nationalparks -n ${GUID}-tasks-dev
 #oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
 
