@@ -42,7 +42,7 @@ oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imag
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev
 oc expose dc/mlbparks --port 8080 -n ${GUID}-parks-dev
 oc expose svc mlbparks -n ${GUID}-parks-dev
-oc create route edge mlbparks --service=mlbparks --port=8080 -n $GUID-parks-dev
+#oc create route edge mlbparks --service=mlbparks --port=8080 -n $GUID-parks-dev
 
 echo "Creating Nationalparks base app"
 oc new-build --binary=true --name="nationalparks" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
@@ -50,7 +50,7 @@ oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-mi
 oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev
 oc expose dc/nationalparks -n ${GUID}-parks-dev
 oc expose svc nationalparks -n ${GUID}-tasks-dev
-oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
+#oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
 
 echo "Creating ParksMap base app"
 oc new-build --binary=true --name="parksmap" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
@@ -58,7 +58,7 @@ oc new-app ${GUID}-parks-dev/parksmap:0.0-0 --name=parksmap --allow-missing-imag
 oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev
 oc expose dc/parksmap --port=8080 -n ${GUID}-parks-dev
 oc expose svc parksmap -n ${GUID}-parks-dev
-oc create route edge parksmap --service=parksmap --port=8080 -n $GUID-parks-dev
+#oc create route edge parksmap --service=parksmap --port=8080 -n $GUID-parks-dev
 
 
 
