@@ -20,8 +20,9 @@ podTemplate(
     git 'https://github.com/olivierlogi/advdev_homework_template.git'
       echo "Packaging ParksMap"
       sh 'pwd; ls'
-      sh "cd ParksMap"
-      sh "mvn -s ./nexus_settings.xml clean package -DskipTests=true"
+      sh "mvn -s ./nexus_settings.xml -f ParksMap/pom.xml"
+      //sh "cd ParksMap"
+      //sh "mvn -s ../nexus_settings.xml clean package -DskipTests=true"
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `ParksMap`.
