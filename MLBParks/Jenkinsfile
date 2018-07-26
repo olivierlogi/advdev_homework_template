@@ -13,10 +13,14 @@ podTemplate(
   ]
 ) {
   node('skopeo-pod') {
+    def GUID = "w054"
+    def CLUSTER = "na39.openshift.opentlc.com"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
-    dir ('MLBParks') {
-      sh "mvn -s ../nexus_settings.xml clean package -DskipTests=true"
+    git 'https://github.com/olivierlogi/advdev_homework_template.git'
+    echo "MLBPark"
+    sh 'pwd; ls'
+    sh "mvn -s ./nexus_settings.xml -f MLBParks/pom.xml clean package -DskipTests=true"
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `MLBParks`.
