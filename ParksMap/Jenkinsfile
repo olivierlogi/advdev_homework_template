@@ -21,6 +21,7 @@ podTemplate(
       echo "Packaging ParksMap"
       sh 'pwd; ls'
       sh "mvn -s ./nexus_settings.xml -f ParksMap/pom.xml clean package -DskipTests=true"
+      sh "mvn -s ./nexus_settings.xml test"
       //sh "cd ParksMap"
       //sh "mvn -s ../nexus_settings.xml clean package -DskipTests=true"
 

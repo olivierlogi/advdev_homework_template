@@ -21,6 +21,7 @@ podTemplate(
       echo "Packaging NationalPark"
       sh 'pwd; ls'
       sh "mvn -s ./nexus_settings.xml -f Nationalparks/pom.xml clean package -DskipTests=true"
+      sh "mvn -s ./nexus_settings.xml test"
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `Nationalparks`.
