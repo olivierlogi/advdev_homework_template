@@ -32,7 +32,7 @@ oc policy add-role-to-user edit system:serviceaccount:$GUID-jenkins:jenkins -n $
 
 
 #oc new-app -f ./Infrastructure/templates/jenkins.json -p MEMORY_LIMIT=2Gi -n ${GUID}-jenkins
-oc new-app jenkins-persistent --param ENABLE_OAUTH=false --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=2Gi -n ${GUID}-jenkins
+oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=2Gi -n ${GUID}-jenkins
 
 #docker build ../docker -t docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 
@@ -47,10 +47,10 @@ oc new-build --name=jenkins-slave-appdev \
 oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
 
 #MLBPark pipeline BuildConfig
-#oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
+oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
 
 #NationalParks pipeline BuildConfig
-#oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
+oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
 
 #Jenkins slave BuildConfig 
 #oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
