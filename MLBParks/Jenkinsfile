@@ -17,16 +17,31 @@ podTemplate(
     def CLUSTER = "na39.openshift.opentlc.com"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
-    git 'https://github.com/olivierlogi/advdev_homework_template.git'
-    echo "MLBPark"
-    sh 'pwd; ls'
-    sh "mvn -s ./nexus_settings.xml -f MLBParks/pom.xml clean package -DskipTests=true"
-    sh "mvn -s ./nexus_settings.xml test"
-
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `MLBParks`.
     // Also copy "../nexus_settings.xml" to your build directory
     // and replace 'GUID' in the file with your ${GUID} to point to >your< Nexus instance
+    
+    echo "MLBPark"
+    sh 'pwd; ls'
+    def mvnCmd = "mvn -s ./nexus_settings.xml"
+
+    stage('Checkout Source Code') {
+      echo "Checking out source code..."
+      git 'https://github.com/olivierlogi/advdev_homework_template.git'
+    }
+
+    def groupId = getGroupIdFromPom("./MLBParks/pom.xml")
+    def artifactId = getArtifactIdFromPom("./MLBParks/pom.xml")
+    def version = getVersionFromPom("./MLBParks/pom.xml")
+
+    def devTag = "${version}-${BUILD_NUMBER}"
+    def prodTag = "${version}"
+
+    stage('Build Java War') {
+      echo "Building java war version ${devTag}..."
+      sh "${mvnCmd} -f ./MLBParks/pom.xml -DskipTests clean package"
+    }
  
   }
 }
