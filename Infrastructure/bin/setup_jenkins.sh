@@ -32,7 +32,18 @@ oc policy add-role-to-user edit system:serviceaccount:$GUID-jenkins:jenkins -n $
 
 
 #oc new-app -f ./Infrastructure/templates/jenkins.json -p MEMORY_LIMIT=2Gi -n ${GUID}-jenkins
-oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=2Gi -n ${GUID}-jenkins
+#oc new-app jenkins-persistent --param ENABLE_OAUTH=true \
+ #--param MEMORY_LIMIT=2Gi \
+ #--param VOLUME_CAPACITY=2Gi \
+ #--param CPU_LIMIT=1 \
+ #- n ${GUID}-jenkins
+
+oc new-app -f ./Infrastructure/templates/jenkins.json \
+  --param ENABLE_OAUTH=true \
+  --param MEMORY_LIMIT=2Gi \
+  --param CPU_LIMIT=1 \
+  --param VOLUME_CAPACITY=4Gi \
+  -n "${GUID}-jenkins"
 
 #docker build ../docker -t docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 
