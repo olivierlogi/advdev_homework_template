@@ -31,13 +31,6 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 oc policy add-role-to-user edit system:serviceaccount:$GUID-jenkins:jenkins -n $GUID-jenkins
 
 
-#oc new-app -f ./Infrastructure/templates/jenkins.json -p MEMORY_LIMIT=2Gi -n ${GUID}-jenkins
-#oc new-app jenkins-persistent --param ENABLE_OAUTH=true \
- #--param MEMORY_LIMIT=2Gi \
- #--param VOLUME_CAPACITY=2Gi \
- #--param CPU_LIMIT=1 \
- #- n ${GUID}-jenkins
-
 oc new-app -f ./Infrastructure/templates/jenkins.json \
   --param ENABLE_OAUTH=true \
   --param MEMORY_LIMIT=2Gi \
@@ -55,13 +48,13 @@ oc new-build --name=jenkins-slave-appdev \
 
 
 #Parksmap pipeline BuildConfig
-#oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
+oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
 
 #MLBPark pipeline BuildConfig
 oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
 
 #NationalParks pipeline BuildConfig
-#oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
+oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
 
 #Jenkins slave BuildConfig 
 #oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
