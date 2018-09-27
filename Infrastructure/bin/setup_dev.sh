@@ -39,8 +39,6 @@ oc new-app -f ./Infrastructure/templates/mongodb_persistent.json -n ${GUID}-park
 #Deploy MLBPark Backend service
 echo "Creating MLBPark base app"
 
-oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev
-oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
 oc create configmap mlbparks-config --from-literal="APPNAME=MLB Parks (Dev)" \
     --from-literal="DB_HOST=mongodb" \
     --from-literal="DB_PORT=27017" \
@@ -49,6 +47,8 @@ oc create configmap mlbparks-config --from-literal="APPNAME=MLB Parks (Dev)" \
     --from-literal="DB_NAME=mongodb" \
     -n "${GUID}-parks-dev"
 
+oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev
+oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
 oc set env dc/mlbparks --from=configmap/mlbparks-config -n ${GUID}-parks-dev
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev
 oc expose dc/mlbparks --port=8080 -n ${GUID}-parks-dev
@@ -60,19 +60,22 @@ echo "Creating Nationalparks base app"
 oc create configmap nationalparks-config --from-literal="APPNAME=National Parks (Dev)" -n "${GUID}-parks-dev"
 oc new-build --binary=true --name="nationalparks" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
 oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
+oc set env dc/nationalparks --from configmap/nationalparks-config -n "${GUID}-parks-dev"
+#oc set env dc/nationalparks --from configmap/mongodb-config -n "${GUID}-parks-dev"
 oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev
 oc expose dc/nationalparks --port=8080 -n ${GUID}-parks-dev
 oc expose svc nationalparks -n ${GUID}-tasks-dev
-oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
+#oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
 
 #Deploy parksmap frontend app
 echo "Creating ParksMap base app"
 oc new-build --binary=true --name="parksmap" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
 oc new-app ${GUID}-parks-dev/parksmap:0.0-0 --name=parksmap --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
+oc set env dc/parksmap -e "APPNAME=ParksMap (Dev)" -n "${GUID}-parks-dev"
 oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev
 oc expose dc/parksmap --port=8080 -n ${GUID}-parks-dev
 oc expose svc parksmap -n ${GUID}-parks-dev
-oc create route edge parksmap --service=parksmap --port=8080 -n $GUID-parks-dev
+#oc create route edge parksmap --service=parksmap --port=8080 -n $GUID-parks-dev
 
 
 
