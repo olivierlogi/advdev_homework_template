@@ -42,7 +42,7 @@ podTemplate(
       echo "Building java war version"
       sh "${mvnCmd} -f ./MLBParks/pom.xml -DskipTests clean package"
     }
- 
+  }
 }
 
 // Convenience Functions to read variables from the pom.xml
