@@ -42,6 +42,22 @@ podTemplate(
       echo "Building java war version"
       sh "${mvnCmd} -f ./MLBParks/pom.xml -DskipTests clean package"
     }
+
+    stage('Unit Tests') {
+    echo "MLBParks unit tests..."
+    sh "${mvnCmd} -f ./MLBParks/pom.xml test"
+    }
+
+    stage('Code Analysis') {
+    echo "Start Code Analysis"
+    sh "${mvnCmd} -f ./MLBParks/pom.xml sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.${CLUSTER} -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"
+    }
+    
+    stage('Publishing to repository') {
+    echo "Publishing to nexus..."
+    sh "${mvnCmd} -f ./MLBParks/pom.xml deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3-${GUID}-nexus.apps.${CLUSTER}/repository/releases"
+    }
+
   }
 }
 
