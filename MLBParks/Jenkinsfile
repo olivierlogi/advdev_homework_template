@@ -43,32 +43,6 @@ podTemplate(
       sh "${mvnCmd} -f ./MLBParks/pom.xml -DskipTests clean package"
     }
  
-    stage('Unit Tests') {
-      echo "MLBParks unit tests..."
-      sh "${mvnCmd} -f ./MLBParks/pom.xml test"
-    }
-    stage('Code Analysis') {
-      echo "Start Code Analysis"
-      sh "${mvnCmd} -f ./MLBParks/pom.xml sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.${CLUSTER} -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"
-    }
-
-    stage('Publishing to repository') {
-      echo "Publishing to nexus..."
-      sh "${mvnCmd} -f ./MLBParks/pom.xml deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3-${GUID}-nexus.apps.${CLUSTER}/repository/releases"
-    }
-
-    stage('Build and Tag OpenShift Image') {
-      echo "Building OpenShift container image tasks:${devTag}..."
-      sh "oc start-build mlbparks --follow --from-file=http://nexus3-${GUID}-nexus.apps.${CLUSTER}/repository/releases/com/openshift/evg/roadshow/mlbparks/${version}/mlbparks-${version}.war -n ${GUID}-parks-dev"
-      openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'
-    }
-
-    stage('Dev deployment') {
-        echo "Deploying to Development Project"
-        sh "oc set image dc/mlbparks mlbparks=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${devTag} -n ${GUID}-parks-dev"
-        openshiftDeploy depCfg: 'mlbparks', namespace: "${GUID}-parks-dev", verbose: 'false', waitTime: '', waitUnit: 'sec'
-
-  }
 }
 
 // Convenience Functions to read variables from the pom.xml
