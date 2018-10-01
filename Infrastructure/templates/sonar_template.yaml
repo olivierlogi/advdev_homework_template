@@ -20,10 +20,10 @@ objects:
       local: false
     tags:
     - annotations:
-        openshift.io/imported-from: wkulhanek/sonarqube:6.7.2
+        openshift.io/imported-from: wkulhanek/sonarqube:7.3
       from:
         kind: DockerImage
-        name: wkulhanek/sonarqube:6.7.4
+        name: wkulhanek/sonarqube:7.3
       generation: 2
       importPolicy: {}
       name: 6.7.2
@@ -251,7 +251,7 @@ objects:
         - sonarqube
         from:
           kind: ImageStreamTag
-          name: sonarqube:6.7.2
+          name: sonarqube:7.3
           namespace: ${GUID}-sonarqube
       type: ImageChange
   status:
