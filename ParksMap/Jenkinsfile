@@ -17,11 +17,7 @@ podTemplate(
     def CLUSTER = "na39.openshift.opentlc.com"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
-    git 'https://github.com/olivierlogi/advdev_homework_template.git'
-      echo "Packaging ParksMap"
-      sh 'pwd; ls'
-      sh "mvn -s ./nexus_settings.xml -f ParksMap/pom.xml clean package -DskipTests=true"
-      sh "mvn -s ./nexus_settings.xml test"
+    
       //sh "cd ParksMap"
       //sh "mvn -s ../nexus_settings.xml clean package -DskipTests=true"
 
@@ -29,7 +25,13 @@ podTemplate(
     // You need to build the application in directory `ParksMap`.
     // Also copy "../nexus_settings.xml" to your build directory
     // and replace 'GUID' in the file with your ${GUID} to point to >your< Nexus instance
-
+    echo "ParksMap"
+    sh 'pwd; ls'
+    
+    stage('Checkout Source Code') {
+      echo "Checking out source code..."
+      git 'https://github.com/olivierlogi/advdev_homework_template.git'
+    }
   }
 }
 

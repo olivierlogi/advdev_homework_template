@@ -17,17 +17,21 @@ podTemplate(
     def CLUSTER = "na39.openshift.opentlc.com"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
-    git 'https://github.com/olivierlogi/advdev_homework_template.git'
-      echo "Packaging NationalPark"
-      sh 'pwd; ls'
-      sh "mvn -s ./nexus_settings.xml -f Nationalparks/pom.xml clean package -DskipTests=true"
-      sh "mvn -s ./nexus_settings.xml test"
+    
 
     // Your Pipeline Code goes here. Make sure to use the ${GUID} and ${CLUSTER} parameters where appropriate
     // You need to build the application in directory `Nationalparks`.
     // Also copy "../nexus_settings.xml" to your build directory
     // and replace 'GUID' in the file with your ${GUID} to point to >your< Nexus instance
-
+    echo "National Park"
+    sh 'pwd; ls'
+    
+    stage('Checkout Source Code') {
+      echo "Checking out source code..."
+      git 'https://github.com/olivierlogi/advdev_homework_template.git'
+    }
+      //sh "mvn -s ./nexus_settings.xml -f Nationalparks/pom.xml clean package -DskipTests=true"
+      //sh "mvn -s ./nexus_settings.xml test"
   }
 }
 
