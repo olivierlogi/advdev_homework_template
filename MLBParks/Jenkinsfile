@@ -89,3 +89,4 @@ def getArtifactIdFromPom(pom) {
   def matcher = readFile(pom) =~ '<artifactId>(.+)</artifactId>'
   matcher ? matcher[0][1] : null
 }
+}
