@@ -33,7 +33,7 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 
 oc new-app -f ./Infrastructure/templates/jenkins.json \
   --param ENABLE_OAUTH=true \
-  --param MEMORY_LIMIT=2Gi \
+  --param MEMORY_LIMIT=4Gi \
   --param CPU_LIMIT=2 \
   --param VOLUME_CAPACITY=4Gi \
   -n "${GUID}-jenkins"
@@ -42,13 +42,7 @@ oc patch dc/jenkins \
   -p "{\"spec\":{\"strategy\":{\"recreateParams\":{\"timeoutSeconds\":1200}}}}" \
   -n "${GUID}-jenkins"
 
-#docker build ../docker -t docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 
-#oc new-app --strategy=docker ./Infrastructure/docker/ -n ${GUID}-jenkins
-
-#oc new-build --name=jenkins-slave-appdev \
-#    --dockerfile="$(< ./Infrastructure/docker/skopeo/Dockerfile)" \
-#    -n $GUID-jenkins
 oc create imagestream jenkins-slave-appdev -n "${GUID}-jenkins"
 oc create -f "${TEMPLATES_PATH:-./Infrastructure/templates}"/BuildConfig_Skopeo -n "${GUID}-jenkins"
 oc start-build skopeo-build -n "${GUID}-jenkins"
