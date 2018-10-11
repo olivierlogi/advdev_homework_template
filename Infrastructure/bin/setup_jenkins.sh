@@ -34,7 +34,7 @@ oc policy add-role-to-user edit system:serviceaccount:$GUID-jenkins:jenkins -n $
 oc new-app -f ./Infrastructure/templates/jenkins.json \
   --param ENABLE_OAUTH=true \
   --param MEMORY_LIMIT=2Gi \
-  --param CPU_LIMIT=1 \
+  --param CPU_LIMIT=2 \
   --param VOLUME_CAPACITY=4Gi \
   -n "${GUID}-jenkins"
 
