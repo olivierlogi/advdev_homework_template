@@ -7,14 +7,12 @@ podTemplate(
     containerTemplate(
       name: "jnlp",
       image: "docker-registry.default.svc:5000/w054-jenkins/jenkins-slave-appdev",
-      resourceRequestMemory: "1Gi",
+      resourceRequestMemory: "2Gi",
       resourceLimitMemory: "2Gi"
     )
   ]
 ) {
   node('skopeo-pod') {
-    def GUID = "w054"
-    def CLUSTER = "na39.openshift.opentlc.com"
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
     
@@ -32,6 +30,42 @@ podTemplate(
       echo "Checking out source code..."
       git 'https://github.com/olivierlogi/advdev_homework_template.git'
     }
+
+    def mvnCmd = "mvn -s ./nexus_settings.xml"
+
+    def groupId = getGroupIdFromPom("./ParksMap/pom.xml")
+    def artifactId = getArtifactIdFromPom("./ParksMap/pom.xml")
+    def version = getVersionFromPom("./ParksMap/pom.xml")
+
+    def devTag = "${version}-${BUILD_NUMBER}"
+    def prodTag = "${version}"
+
+    stage('Build Java jar') {
+      echo "Building version ${devTag}"
+      sh "${mvnCmd} -f ./ParksMap/pom.xml clean package spring-boot:repackage -DskipTests -Dcom.redhat.xpaas.repo.redhatga"
+    }
+
+    stage('Unit Tests') {
+      echo "ParksMap Unit Tests"
+      sh "${mvnCmd} -f ./ParksMap/pom.xml test"
+    }
+
+    stage('Code Analysis') {
+      echo "Start Code analysis"
+      sh "${mvnCmd} -f ./ParksMap/pom.xml sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.${CLUSTER} -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"
+    } 
+
+    stage('Publish to repository') {
+      echo "Publishing to nexus"
+      sh "${mvnCmd} -f ./ParksMap/pom.xml deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3-${GUID}-nexus.apps.${CLUSTER}/repository/releases"
+    }
+
+    stage('Build Container Image') {
+      echo "Building container image tasks:${devTag}..."
+      sh "oc start-build parksmap --follow --from-file=./ParksMap/target/parksmap.jar -n ${GUID}-parks-dev"
+      openshiftTag alias: 'false', destStream: 'parksmap', destTag: devTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'parksmap', srcTag: 'latest', verbose: 'false'
+    }
+
   }
 }
 
