@@ -13,8 +13,7 @@ podTemplate(
   ]
 ) {
   node('skopeo-pod') {
-    def GUID = "w054"
-    def CLUSTER = "na39.openshift.opentlc.com"
+    
     echo "GUID: ${GUID}"
     echo "CLUSTER: ${CLUSTER}"
     
@@ -30,8 +29,41 @@ podTemplate(
       echo "Checking out source code..."
       git 'https://github.com/olivierlogi/advdev_homework_template.git'
     }
-      //sh "mvn -s ./nexus_settings.xml -f Nationalparks/pom.xml clean package -DskipTests=true"
-      //sh "mvn -s ./nexus_settings.xml test"
+
+    def mvnCmd = "mvn -s ./nexus_settings.xml"
+
+    def groupId = getGroupIdFromPom("./Nationalparks/pom.xml")
+    def artifactId = getArtifactIdFromPom("./Nationalparks/pom.xml")
+    def version = getVersionFromPom("./Nationalparks/pom.xml")
+
+    def devTag = "${version}-${BUILD_NUMBER}"
+    def prodTag = "${version}"
+
+    stage('Build Java jar') {
+      echo "Building version ${devTag}..."
+      sh "${mvnCmd} -f ./Nationalparks/pom.xml clean package -Dmaven.test.skip=true"
+    }
+
+    stage('Unit Tests') {
+      echo "Nationalparks Unit Tests..."
+      sh "${mvnCmd} -f ./Nationalparks/pom.xml test"
+    }
+
+     stage('Code Analysis') {
+      echo "Start code analyzing"
+      sh "${mvnCmd} -f ./Nationalparks/pom.xml sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.${CLUSTER} -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"
+    } 
+
+    stage('Publishing to repository') {
+      echo "Publishing to nexus"
+      sh "${mvnCmd} -f ./Nationalparks/pom.xml deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3-${GUID}-nexus.apps.${CLUSTER}/repository/releases"
+    }
+
+    stage('Building container Image') {
+      echo "Building container image Nationalparks:${devTag}..."
+      sh "oc start-build nationalparks --follow --from-file=./Nationalparks/target/nationalparks.jar -n ${GUID}-parks-dev"
+      openshiftTag alias: 'false', destStream: 'nationalparks', destTag: devTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'nationalparks', srcTag: 'latest', verbose: 'false'
+    }
   }
 }
 

@@ -50,7 +50,7 @@ oc start-build skopeo-build -n "${GUID}-jenkins"
 
 
 #Parksmap pipeline BuildConfig
-#c create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
+oc create -f ./Infrastructure/templates/parksmap-pipeline.yaml -n ${GUID}-jenkins
 
 #MLBPark pipeline BuildConfig
 oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkins
