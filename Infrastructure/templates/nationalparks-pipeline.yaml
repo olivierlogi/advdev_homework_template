@@ -8,7 +8,7 @@ spec:
       uri: "https://github.com/olivierlogi/advdev_homework_template.git"
   strategy:
     jenkinsPipelineStrategy:
-    env:
+      env:
          - name: GUID
            value: ${GUID}
          - name: CLUSTER
