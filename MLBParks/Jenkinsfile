@@ -59,8 +59,8 @@ podTemplate(
 
     stage('Build container image') {
     echo "Building container image MLBParks:0.0-0"
-    sh "ls ./target/ | grep .war"
-    sh "oc start-build mlbparks --follow --from-file=./target/mlbparks.war -n ${GUID}-parks-dev"
+    sh "ls ./MLBParks/target/ | grep .war"
+    sh "oc start-build mlbparks --follow --from-file=./MLBParks/target/mlbparks.war -n ${GUID}-parks-dev"
     openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'
     }
 
