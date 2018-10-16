@@ -66,7 +66,7 @@ podTemplate(
     }
 
     stage('Verify Deploy In Development') {
-      echo "Deploying container image to Development Project..."
+      echo "Deploying container image to Development Project"
       sh "oc set image dc/nationalparks nationalparks=docker-registry.default.svc:5000/${GUID}-parks-dev/nationalparks:${devTag} -n ${GUID}-parks-dev"
       
       sh "oc delete configmap nationalparks-config --ignore-not-found=true -n ${GUID}-parks-dev"
