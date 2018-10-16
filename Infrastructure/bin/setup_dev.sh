@@ -24,7 +24,7 @@ MONGODB_PASSWORD="mongodb"
 MONGODB_DATABASE="parks"
 MONGODB_ADMIN_PASSWORD="mongodb"
 VOLUME_CAPACITY="1Gi"
-MONGODB_VERSION="3.2" #could be latest
+MONGODB_VERSION="3.2"
 
 oc new-app -f ./Infrastructure/templates/mongodb_persistent.json -n ${GUID}-parks-dev  --param MEMORY_LIMIT=$MEMORY_LIMIT \
 --param NAMESPACE=${NAMESPACE} \
@@ -44,7 +44,7 @@ oc create configmap mlbparks-config --from-literal="APPNAME=MLB Parks (Dev)" \
     --from-literal="DB_PORT=27017" \
     --from-literal="DB_USERNAME=mongodb" \
     --from-literal="DB_PASSWORD=mongodb" \
-    --from-literal="DB_NAME=mongodb" \
+    --from-literal="DB_NAME=parks" \
     -n "${GUID}-parks-dev"
 
 oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev
