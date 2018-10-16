@@ -70,6 +70,20 @@ podTemplate(
     openshiftDeploy depCfg: 'mlbparks', namespace: "${GUID}-parks-dev", verbose: 'false', waitTime: '', waitUnit: 'sec'
     }
 
+    stage('Run Integration Tests') {
+      echo "Wait 60 seconds"
+      sleep 60
+
+      echo "Integration Tests"
+      sh "curl http://mlbparks-${GUID}-parks-dev.apps.${CLUSTER}/ws/healthz/ | grep -q 'OK'"
+      sh "curl http://mlbparks-${GUID}-parks-dev.apps.${CLUSTER}/ws/data/load/ | grep -q 'Items inserted in database: 30'"
+    }
+
+    stage('Copy Image') {
+      echo "Copying image to Nexus Docker Registry"
+      sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:admin123 docker://docker-registry.default.svc.cluster.local:5000/${GUID}-parks-dev/mlbparks:${devTag} docker://nexus-registry-${GUID}-nexus.apps.${CLUSTER}/mlbparks:${devTag}"
+      openshiftTag alias: 'false', destStream: 'mlbparks', destTag: prodTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'
+    }
 
   }
 }
