@@ -36,6 +36,8 @@ oc new-app -f ./Infrastructure/templates/mongodb_persistent.json -n ${GUID}-park
 --param VOLUME_CAPACITY=${VOLUME_CAPACITY} \
 --param MONGODB_VERSION=${MONGODB_VERSION}
 
+
+
 #Deploy MLBPark Backend service
 echo "Creating MLBPark base app"
 
@@ -57,15 +59,27 @@ oc expose svc mlbparks -n ${GUID}-parks-dev
 
 #Deploy Nationalparks Backend service
 echo "Creating Nationalparks base app"
-oc create configmap nationalparks-config --from-literal="APPNAME=National Parks (Dev)" -n "${GUID}-parks-dev"
+
+
+oc create configmap nationalparks-config --from-literal="APPNAME=National Parks (Dev)" \
+    --from-literal="DB_HOST=mongodb" \
+    --from-literal="DB_PORT=27017" \
+    --from-literal="DB_USERNAME=mongodb" \
+    --from-literal="DB_PASSWORD=mongodb" \
+    --from-literal="DB_NAME=parks" \
+    -n ${GUID}-parks-dev
+
 oc new-build --binary=true --name="nationalparks" redhat-openjdk18-openshift:1.2 -n ${GUID}-parks-dev
-oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
+oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks -l type=parksmap-backend --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev
+
 oc set env dc/nationalparks --from configmap/nationalparks-config -n "${GUID}-parks-dev"
-#oc set env dc/nationalparks --from configmap/mongodb-config -n "${GUID}-parks-dev"
+
 oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev
-oc expose dc/nationalparks --port=8080 -n ${GUID}-parks-dev
-oc expose svc nationalparks -n ${GUID}-tasks-dev
-#oc create route edge nationalparks --service=nationalparks --port=8080 -n $GUID-parks-dev
+oc expose dc nationalparks --port=8080 -n ${GUID}-parks-dev
+oc expose svc nationalparks --labels="type=parksmap-backend" -n ${GUID}-parks-dev
+
+oc set probe dc/nationalparks --liveness --failure-threshold 5 --initial-delay-seconds 30 -- echo ok -n ${GUID}-parks-dev
+oc set probe dc/nationalparks --readiness --failure-threshold 3 --initial-delay-seconds 60 --get-url=http://:8080/ws/healthz/ -n ${GUID}-parks-dev
 
 #Deploy parksmap frontend app
 echo "Creating ParksMap base app"
