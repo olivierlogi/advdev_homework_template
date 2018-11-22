@@ -15,16 +15,26 @@ echo "Setting up Parks Production project"
 
 # To be Implemented by Student
 
+echo "Setting up user permissions in project ${GUID}-parks-prod"
 oc policy add-role-to-user view --serviceaccount=default -n ${GUID}-parks-prod
+oc policy add-role-to-user edit --serviceaccount=default -n ${GUID}-parks-prod
 oc policy add-role-to-group system:image-puller system:serviceaccounts:${GUID}-parks-prod -n ${GUID}-parks-dev
 oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-prod
 
 
 echo "Setting up MongoDB statefulset"
-oc process -f ./Infrastructure/templates/mongodb_statefulset.yaml -n ${GUID}-parks-prod | oc create -n ${GUID}-parks-prod -f -
 
-oc expose svc/mongodb-internal -n ${GUID}-parks-prod
-oc expose svc/mongodb -n ${GUID}-parks-prod
+# Config MongoDB configmap
+oc create configmap parksdb-conf -n ${GUID}-parks-prod \
+       --from-literal=DB_REPLICASET=rs0 \
+       --from-literal=DB_HOST=mongodb \
+       --from-literal=DB_PORT=27017 \
+       --from-literal=DB_USERNAME=mongodb \
+       --from-literal=DB_PASSWORD=mongodb \
+       --from-literal=DB_NAME=parks
+
+# Setup replicated MongoDB from templates + configure it via ConfigMap
+oc new-app -f ./Infrastructure/templates/mongodb_statefulset.yaml -p MONGO_CONFIGMAP_NAME=parksdb-conf -n ${GUID}-parks-prod
 
 
 echo "Setting up MLBPark blue"
@@ -104,6 +114,3 @@ oc set env dc/parksmap-green --from=configmap/parksmap-config -n ${GUID}-parks-p
 oc expose dc/parksmap-green --port 8080 -n ${GUID}-parks-prod
 
 oc expose svc/parksmap-green --name parksmap -n ${GUID}-parks-prod
-
-
-
