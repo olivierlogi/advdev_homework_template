@@ -17,7 +17,4 @@ oc policy add-role-to-user edit system:serviceaccount:gpte-jenkins:jenkins -n ${
 # Ideally just calls a template
 oc new-app -f ./Infrastructure/templates/sonar_template.yaml -p GUID=${GUID} -n ${GUID}-sonarqube
 
-#oc new-app -f "${TEMPLATES_PATH:-./Infrastructure/templates}"/sonarqube-postgresql-template.yaml \
- # --param=SONARQUBE_IMAGE=docker.io/wkulhanek/sonarqube \
-  #--param=SONARQUBE_VERSION=7.3 \
- # -n "${GUID}-sonarqube"
+
