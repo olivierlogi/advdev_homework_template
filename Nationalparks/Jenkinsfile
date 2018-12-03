@@ -119,7 +119,13 @@ podTemplate(
       echo "Config Map to be used:   " + destcfgMap
 
       sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/nationalparks:${prodTag} -n ${GUID}-parks-prod"
-                    
+
+      sh "oc delete configmap nationalparks-config -n ${GUID}-parks-prod --ignore-not-found=true"
+      sh "oc create configmap nationalparks-config --from-literal=APPNAME='nationalparks (${destcfgMap})' -n ${GUID}-parks-prod"
+      sh "oc set env dc/${destApp} --from=configmap/nationalparks-config -n ${GUID}-parks-prod"
+      
+      sh "oc expose dc/${destApp} --port 8080 -n ${GUID}-parks-prod" 
+
 
       openshiftDeploy depCfg: destApp, namespace: "${GUID}-parks-prod", verbose: 'false', waitTime: '20', waitUnit: 'min'
       openshiftVerifyDeployment depCfg: destApp, namespace: "${GUID}-parks-prod", replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true', waitTime: '20', waitUnit: 'min'
