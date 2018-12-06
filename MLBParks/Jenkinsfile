@@ -105,9 +105,9 @@ podTemplate(
       
       //sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
       sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/${artifactId}:${prodTag} -n ${GUID}-parks-prod"
-      //sh "oc delete configmap mlbparks-config -n ${GUID}-parks-prod --ignore-not-found=true"
-      //sh "oc create configmap mlbparks-config --from-literal=APPNAME='MLB Parks (${destcfgMap})' -n ${GUID}-parks-prod"
-      //sh "oc set env dc/${destApp} --from=configmap/mlbparks-config -n ${GUID}-parks-prod"
+      sh "oc delete configmap mlbparks-config -n ${GUID}-parks-prod --ignore-not-found=true"
+      sh "oc create configmap mlbparks-config --from-literal=APPNAME='MLB Parks (${destcfgMap})' -n ${GUID}-parks-prod"
+      sh "oc set env dc/${destApp} --from=configmap/mlbparks-config -n ${GUID}-parks-prod"
       
       sh "oc expose dc/${destApp} --port 8080 -n ${GUID}-parks-prod" 
       
