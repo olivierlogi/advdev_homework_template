@@ -103,10 +103,18 @@ podTemplate(
       echo "Destination Application: " + destApp
       echo "Config Map to be used:   " + destcfgMap
       
-      //sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
-      sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/${artifactId}:${prodTag} -n ${GUID}-parks-prod"
+      sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
+      
       sh "oc delete configmap mlbparks-config -n ${GUID}-parks-prod --ignore-not-found=true"
-      sh "oc create configmap mlbparks-config --from-literal=APPNAME='MLB Parks (${destcfgMap})' -n ${GUID}-parks-prod"
+      //sh "oc create configmap mlbparks-config --from-literal=APPNAME='MLB Parks (${destcfgMap})' -n ${GUID}-parks-prod"
+      sh "oc create configmap mlbparks-config --from-literal=APPNAME='MLB Parks (${destcfgMap})' \
+                --from-literal=DB_PORT=27017 \
+                --from-literal=DB_USERNAME=mongodb \
+                --from-literal=DB_PASSWORD=mongodb \
+                --from-literal=DB_NAME=parks \
+                --from-literal=DB_REPLICASET=rs0 \
+                -n ${GUID}-parks-prod"
+      
       sh "oc set env dc/${destApp} --from=configmap/mlbparks-config -n ${GUID}-parks-prod"
       
       sh "oc expose dc/${destApp} --port 8080 -n ${GUID}-parks-prod" 

@@ -121,7 +121,16 @@ podTemplate(
       sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/nationalparks:${prodTag} -n ${GUID}-parks-prod"
 
       sh "oc delete configmap nationalparks-config -n ${GUID}-parks-prod --ignore-not-found=true"
-      sh "oc create configmap nationalparks-config --from-literal=APPNAME='National Parks (${destcfgMap})' -n ${GUID}-parks-prod"
+      //sh "oc create configmap nationalparks-config --from-literal=APPNAME='National Parks (${destcfgMap})' -n ${GUID}-parks-prod"
+      sh "oc create configmap nationalparks-config \
+                    --from-literal=APPNAME='National Parks (${destcfgMap})' \
+                    --from-literal=DB_HOST=mongodb \
+                    --from-literal=DB_NAME=parks \
+                    --from-literal=DB_PASSWORD=mongodb \
+                    --from-literal=DB_PORT=27017 \
+                    --from-literal=DB_USERNAME=mongodb \
+                    -n ${GUID}-parks-prod"
+      
       sh "oc set env dc/${destApp} --from=configmap/nationalparks-config -n ${GUID}-parks-prod"
       
       sh "oc expose dc/${destApp} --port 8080 -n ${GUID}-parks-prod" 
