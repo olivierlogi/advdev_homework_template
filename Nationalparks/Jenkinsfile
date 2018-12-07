@@ -129,6 +129,7 @@ podTemplate(
                     --from-literal=DB_PASSWORD=mongodb \
                     --from-literal=DB_PORT=27017 \
                     --from-literal=DB_USERNAME=mongodb \
+                    --from-literal=DB_REPLICASET=rs0 \
                     -n ${GUID}-parks-prod"
       
       sh "oc set env dc/${destApp} --from=configmap/nationalparks-config -n ${GUID}-parks-prod"
