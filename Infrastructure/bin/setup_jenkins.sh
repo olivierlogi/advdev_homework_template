@@ -58,8 +58,6 @@ oc create -f ./Infrastructure/templates/mlbparks-pipeline.yaml -n ${GUID}-jenkin
 #NationalParks pipeline BuildConfig
 oc create -f ./Infrastructure/templates/nationalparks-pipeline.yaml -n ${GUID}-jenkins
 
-#Jenkins slave BuildConfig 
-#oc new-app -f ./Infrastructure/templates/jenkins-configmap.yaml --param GUID=${GUID}
 
 oc set env bc/mlbparks-pipeline GUID=${GUID} REPO=${REPO} CLUSTER=${CLUSTER} -n ${GUID}-jenkins
 oc set env bc/nationalparks-pipeline GUID=${GUID} REPO=${REPO} CLUSTER=${CLUSTER} -n ${GUID}-jenkins

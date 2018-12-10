@@ -26,7 +26,6 @@ objects:
   metadata:
     annotations:
       openshift.io/generated-by: OpenShiftNewApp
-#      openshift.io/image.dockerRepositoryCheck: 2018-03-20T19:54:15Z
     creationTimestamp: null
     generation: 2
     labels:

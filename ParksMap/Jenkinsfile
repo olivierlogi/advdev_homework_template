@@ -94,7 +94,6 @@ podTemplate(
       openshiftTag alias: 'false', destStream: 'parksmap', destTag: prodTag, destinationNamespace: "${GUID}-parks-dev", namespace: "${GUID}-parks-dev", srcStream: 'parksmap', srcTag: devTag, verbose: 'false'
     }
 
-    // Blue/Green Deployment 
     def destApp   = "parksmap-green"
     def destcfgMap = "Green"
     def activeApp = ""

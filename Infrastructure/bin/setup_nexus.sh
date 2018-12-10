@@ -29,7 +29,6 @@ oc new-app -f ./Infrastructure/templates/nexus_template.yaml -n "${GUID}-nexus"
 ##########################################<<<<<<<<<<<<<<<<replace with template
 echo -n "Checking if Nexus is Ready..."
 while : ; do
-##  oc get pod -n ${GUID}-nexus|grep '\-2\-'|grep -v deploy|grep "1/1"
   oc get pod -n ${GUID}-nexus | grep -v deploy|grep "1/1"
   [[ "$?" == "1" ]] || break
   echo -n "."
@@ -37,7 +36,6 @@ while : ; do
 done
 
 echo -n "Configuring Nexus"
-# https://www.opentlc.com/labs/ocp_advanced_development/04_1_CICD_Tools_Solution_Lab.html#_configure_nexus
 
 curl -o setup_nexus3.sh -s https://raw.githubusercontent.com/wkulhanek/ocp_advanced_development_resources/master/nexus/setup_nexus3.sh
 chmod +x setup_nexus3.sh

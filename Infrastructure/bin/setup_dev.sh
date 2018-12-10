@@ -89,7 +89,7 @@ oc set env dc/parksmap -e "APPNAME=ParksMap (Dev)" -n "${GUID}-parks-dev"
 oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev
 oc expose dc/parksmap --port=8080 -n ${GUID}-parks-dev
 oc expose svc parksmap -n ${GUID}-parks-dev
-#oc create route edge parksmap --service=parksmap --port=8080 -n $GUID-parks-dev
+
 
 
 
